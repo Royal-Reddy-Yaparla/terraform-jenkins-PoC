@@ -1,3 +1,16 @@
+# CI/CD Integration
+This infrastructure is integrated with a Jenkins pipeline, which automates the execution of Terraform commands (init, plan, apply, destroy) for both DEV and PROD environments. This ensures consistent and repeatable infrastructure provisioning as part of the CI/CD process.
+
+The Jenkins pipeline is configured to:
+
+- Select the appropriate environment (DEV or PROD)
+
+- Trigger Terraform initialization and apply based on Git commits or manual approvals
+
+- Manage backend state securely with S3 and DynamoDB
+
+
+
 # Terraform Multi-Environment Infrastructure Configuration
 
 This repository contains a structured Terraform configuration for provisioning a multi-environment infrastructure in AWS. It includes separate configurations for `DEV` and `PROD` environments, using a module-based approach for better scalability and maintainability.
@@ -202,20 +215,3 @@ To destroy resources:
 terraform destroy -var-file=environments/DEV/dev.tfvars
 ```
 
-### Architecture Flow
-
-User (Internet)  
-     ↓  
-Route53
-     ↓ 
-[ALB (Public Subnet)]  
-     ↓  
-[Kubernetes Ingress (Private Subnet)]  
-     ↓  
-[Service (LoadBalancer/ClusterIP)]  
-     ↓  
-[Nginx (Reverse Proxy Pod in EKS)]  
-     ↓  
-[Backend Pod (Spring Boot)]  
-     ↓  
-[AWS RDS (MySQL) in Private Subnet]
